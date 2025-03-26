@@ -1,0 +1,1 @@
+worker: python3 aigram_bot.py
