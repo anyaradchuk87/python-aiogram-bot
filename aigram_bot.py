@@ -16,24 +16,25 @@ dp = Dispatcher()
 @dp.message(Command("start"))
 async def start(message: types.Message):
     markup = ReplyKeyboardMarkup(
-        keyboard=[[KeyboardButton(text="Open web", web_app=WebAppInfo(url="https://anyaradchuk87.github.io/game_telegram/"))]],
+        keyboard=[
+            [KeyboardButton(text="ℹ️ Info")],
+            [KeyboardButton(text="❓ Help")]
+        ],
         resize_keyboard=True
     )
-    await message.answer("hello my friend", reply_markup=markup)
+    # Просто надсилаємо клавіатуру, без тексту
+    await message.answer(text="Виберіть опцію нижче:", reply_markup=markup)
 
-@dp.message(Command("help"))
-async def help_command(message: types.Message):
-    await message.answer("Це бот з кнопкою для відкриття гри у веб-застосунку.")
-
-async def set_bot_commands(bot: Bot):
-    commands = [
-        BotCommand(command="start", description="Запустити бота"),
-        BotCommand(command="help", description="Допомога та опис"),
-    ]
-    await bot.set_my_commands(commands)
+@dp.message()
+async def handle_buttons(message: types.Message):
+    if message.text == "ℹ️ Info":
+        await message.answer("Це бот для демонстрації меню.")
+    elif message.text == "❓ Help":
+        await message.answer("Натисніть кнопку, щоб дізнатися більше.")
+    else:
+        await message.answer("Будь ласка, використовуйте кнопки меню.")
 
 async def main():
-    await set_bot_commands(bot)
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
