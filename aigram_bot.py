@@ -8,8 +8,8 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-# TOKEN = os.getenv("BOT_TOKEN")
-TOKEN="7875509094:AAEv-d5n-s8_mtRFVcmb2PhHzz4-c-WMI7c"
+TOKEN = os.getenv("BOT_TOKEN")
+# TOKEN="7875509094:AAEv-d5n-s8_mtRFVcmb2PhHzz4-c-WMI7c"
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
