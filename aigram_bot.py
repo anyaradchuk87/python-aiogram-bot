@@ -2,37 +2,38 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.types import BotCommand
 from aiogram.types import KeyboardButton, ReplyKeyboardMarkup, WebAppInfo
 from aiogram.types.web_app_info import WebAppInfo
-from aiogram.filters import Command, Text
+from aiogram.filters import Command
 import asyncio
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
-TOKEN = os.getenv("BOT_TOKEN")
-# TOKEN="7875509094:AAEv-d5n-s8_mtRFVcmb2PhHzz4-c-WMI7c"
+# TOKEN = os.getenv("BOT_TOKEN")
+TOKEN="7875509094:AAEv-d5n-s8_mtRFVcmb2PhHzz4-c-WMI7c"
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
-game_menu = ReplyKeyboardMarkup(
-    keyboard=[
-        [KeyboardButton(text="🎮 Почати гру")],
-        [KeyboardButton(text="🔄 Перезапустити гру")]
-    ],
-    resize_keyboard=True
-)
-
 @dp.message(Command("start"))
-async def cmd_start(message: types.Message):
-    await message.answer("👋 Привіт! Обери опцію:", reply_markup=game_menu)
+async def start(message: types.Message):
+    markup = ReplyKeyboardMarkup(
+        keyboard=[
+            [KeyboardButton(text="ℹ️ Info")],
+            [KeyboardButton(text="❓ Help")]
+        ],
+        resize_keyboard=True
+    )
+    # Просто надсилаємо клавіатуру, без тексту
+    await message.answer(text="Виберіть опцію нижче:", reply_markup=markup)
 
-@dp.message(Text("🎮 Почати гру"))
-async def start_game(message: types.Message):
-    await message.answer("🎯 Гру розпочато!")
-
-@dp.message(Text("🔄 Перезапустити гру"))
-async def restart_game(message: types.Message):
-    await message.answer("♻️ Гру перезапущено!")
+@dp.message()
+async def handle_buttons(message: types.Message):
+    if message.text == "ℹ️ Info":
+        await message.answer("Це бот для демонстрації меню.")
+    elif message.text == "❓ Help":
+        await message.answer("Натисніть кнопку, щоб дізнатися більше.")
+    else:
+        await message.answer("Будь ласка, використовуйте кнопки меню.")
 
 async def main():
     await dp.start_polling(bot)
